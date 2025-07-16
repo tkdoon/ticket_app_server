@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tkdoon.ticket_app.repository.TicketRepository">
+    <select id="selectTickets" resultType="com.tkdoon.ticket_app.entity.TicketEntity">
+        select * from
+        tickets
+        where is_used is false
+        and expiring_date>= CURRENT_TIMESTAMP
+    </select>
+
+    <update id="updateTicketUse" parameterType="int">
+        update tickets
+        set is_used=true,
+        updated_at=CURRENT_TIMESTAMP
+        where ticket_id=#{ticketId}
+        and expiring_date>= CURRENT_TIMESTAMP
+        and is_used is false
+    </update>
+</mapper>
