@@ -3,6 +3,7 @@ name: Supabase Keep Alive
 on:
   schedule:
     - cron: '0 0 * * *'  # 毎日 UTC 0:00 = JST 9:00
+  workflow_dispatch:
 
 jobs:
   ping:
