@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tkdoon.ticket_app.repository.UserRepository">
+    <select id="selectExistingUser" resultType="com.tkdoon.ticket_app.entity.UserEntity">
+        select * from
+        m_user
+        where email =#{email}
+        and is_frozen is false
+    </select>
+
+    <insert id="insertUser">
+        insert into m_user(created_at,email,user_name,icon_url,role,is_frozen)
+        VALUES (CURRENT_TIMESTAMP,#{email},#{userName},#{iconUrl},null,false)
+    </insert>
+</mapper>

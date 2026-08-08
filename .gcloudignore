@@ -1,0 +1,5 @@
+#!include:.gitignore
+
+# Windows製のgradlewはLinuxで実行不可。Buildpackはsystem Gradleにフォールバックする。
+gradlew
+gradlew.bat

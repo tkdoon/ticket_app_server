@@ -3,10 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tkdoon.ticket_app.repository.TicketRepository">
-    <select id="selectTickets" resultType="com.tkdoon.ticket_app.entity.TicketEntity">
+    <select id="selectTicketsByOwnerId" resultType="com.tkdoon.ticket_app.entity.TicketEntity" parameterType="int">
         select * from
         tickets
         where is_used is false
+        and owner_id=#{ownerId}
         and expiring_date>= CURRENT_TIMESTAMP
     </select>
 
@@ -18,4 +19,11 @@
         and expiring_date>= CURRENT_TIMESTAMP
         and is_used is false
     </update>
+
+    <insert id="insertTicket">
+        insert into tickets
+        (title, description, expiring_date, owner_id, creator_id, is_used, inserted_at, updated_at)
+        values
+        (#{title}, #{description}, #{expiringDate}, #{ownerId}, #{creatorId}, false, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    </insert>
 </mapper>
