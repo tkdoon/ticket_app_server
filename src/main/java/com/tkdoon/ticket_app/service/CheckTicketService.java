@@ -4,7 +4,6 @@ import com.tkdoon.ticket_app.dto.CheckTicketResultDto;
 import com.tkdoon.ticket_app.entity.TicketEntity;
 import com.tkdoon.ticket_app.repository.TicketRepository;
 import com.tkdoon.ticket_app.security.AuthContext;
-import com.tkdoon.ticket_app.security.AuthUser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,17 +19,13 @@ public class CheckTicketService {
     }
 
     public CheckTicketResultDto checkTicket(){
+        int userId = Objects.requireNonNull(AuthContext.currentUser()).getId();
+        List<TicketEntity> receivedTicketList = ticketRepository.selectTicketsByOwnerId(userId);
+        List<TicketEntity> sentTicketList = ticketRepository.selectSentTicketsByCreatorId(userId);
 
-    //        List<TicketEntity> ticketList=new ArrayList<TicketEntity>();
-//
-//        TicketEntity sampleTicket=new TicketEntity();
-//        sampleTicket.setTitle("sample");
-//        ticketList.add(sampleTicket);
-    int userId = Objects.requireNonNull(AuthContext.currentUser()).getId();
-    List<TicketEntity> ticketList=ticketRepository.selectTicketsByOwnerId(userId);
-
-    CheckTicketResultDto resultEntity=new CheckTicketResultDto();
-        resultEntity.setTicketList(ticketList);
-    return resultEntity;
+        CheckTicketResultDto resultEntity = new CheckTicketResultDto();
+        resultEntity.setReceivedTicketList(receivedTicketList);
+        resultEntity.setSentTicketList(sentTicketList);
+        return resultEntity;
     }
 }
