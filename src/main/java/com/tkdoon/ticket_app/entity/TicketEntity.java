@@ -10,5 +10,7 @@ public class TicketEntity {
     private String title;
     private String description;
     private Timestamp expiringDate;
-
+    private Boolean isUsed;
+    private String creatorName;
+    private String ownerName;
 }

@@ -4,18 +4,32 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tkdoon.ticket_app.repository.TicketRepository">
     <select id="selectTicketsByOwnerId" resultType="com.tkdoon.ticket_app.entity.TicketEntity" parameterType="int">
-        select * from
-        tickets
-        where is_used is false
-        and owner_id=#{ownerId}
-        and expiring_date>= CURRENT_TIMESTAMP
+        select t.ticket_id, t.title, t.description, t.expiring_date, t.is_used,
+               u.user_name as creator_name
+        from tickets t
+        left join m_user u on t.creator_id = u.id
+        where t.owner_id = #{ownerId}
+        and (
+            (t.is_used = false and t.expiring_date >= CURRENT_TIMESTAMP)
+            or (t.is_used = true and t.updated_at >= CURRENT_TIMESTAMP - INTERVAL '1 year')
+        )
     </select>
 
-    <update id="updateTicketUse" parameterType="int">
+    <select id="selectSentTicketsByCreatorId" resultType="com.tkdoon.ticket_app.entity.TicketEntity" parameterType="int">
+        select t.ticket_id, t.title, t.description, t.expiring_date, t.is_used,
+               u.user_name as owner_name
+        from tickets t
+        left join m_user u on t.owner_id = u.id
+        where t.creator_id = #{creatorId}
+        and (t.is_used = false or t.updated_at >= CURRENT_TIMESTAMP - INTERVAL '1 year')
+    </select>
+
+    <update id="updateTicketUse">
         update tickets
         set is_used=true,
         updated_at=CURRENT_TIMESTAMP
         where ticket_id=#{ticketId}
+        and owner_id=#{ownerId}
         and expiring_date>= CURRENT_TIMESTAMP
         and is_used is false
     </update>

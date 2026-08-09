@@ -10,5 +10,7 @@ public class CheckTicketResultDto {
 
     private String result="SUCCESS";
 
-    private List<TicketEntity> ticketList;
+    private List<TicketEntity> receivedTicketList;
+
+    private List<TicketEntity> sentTicketList;
 }

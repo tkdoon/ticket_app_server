@@ -14,7 +14,9 @@ import java.util.List;
 public interface TicketRepository {
     List<TicketEntity> selectTicketsByOwnerId(@Param("ownerId") int ownerId);
 
-    int updateTicketUse(@Param("ticketId")int ticketId);
+    List<TicketEntity> selectSentTicketsByCreatorId(@Param("creatorId") int creatorId);
+
+    int updateTicketUse(@Param("ticketId") int ticketId, @Param("ownerId") int ownerId);
 
     void insertTicket(@Param("title") String title,
                       @Param("description") String description,
