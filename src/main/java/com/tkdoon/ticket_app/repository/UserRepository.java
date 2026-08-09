@@ -14,4 +14,8 @@ public interface UserRepository {
 
     void insertUser(String email,String userName,String iconUrl);
 
+    void updateUserName(int id, String userName);
+
+    UserEntity selectUserById(int id);
+
 }

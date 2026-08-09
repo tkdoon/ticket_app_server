@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tkdoon.ticket_app.repository.FriendRequestRepository">
+
+    <insert id="insertFriendRequest">
+        INSERT INTO friend_requests (requester_id, addressee_id)
+        VALUES (#{requesterId}, #{addresseeId})
+    </insert>
+
+    <delete id="deleteFriendRequest">
+        DELETE FROM friend_requests
+        WHERE requester_id = #{requesterId} AND addressee_id = #{addresseeId}
+    </delete>
+
+    <select id="selectIncomingRequests" resultType="com.tkdoon.ticket_app.dto.FriendUserDto">
+        SELECT u.id, u.user_name
+        FROM friend_requests fr
+        JOIN m_user u ON fr.requester_id = u.id
+        WHERE fr.addressee_id = #{userId} AND u.is_frozen IS FALSE
+    </select>
+
+    <select id="selectOutgoingRequests" resultType="com.tkdoon.ticket_app.dto.FriendUserDto">
+        SELECT u.id, u.user_name
+        FROM friend_requests fr
+        JOIN m_user u ON fr.addressee_id = u.id
+        WHERE fr.requester_id = #{userId} AND u.is_frozen IS FALSE
+    </select>
+
+</mapper>

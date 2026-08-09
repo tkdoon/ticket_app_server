@@ -1,6 +1,7 @@
 package com.tkdoon.ticket_app.config;
 
 import com.tkdoon.ticket_app.dto.ErrorResponseDto;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -27,6 +28,12 @@ public class GlobalExceptionHandler {
 
         ErrorResponseDto body = new ErrorResponseDto("ERROR", message, fieldErrors);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDto> handleDataIntegrity(DataIntegrityViolationException ex) {
+        ErrorResponseDto body = new ErrorResponseDto("ERROR", "操作が競合しています。既に申請済みまたは友達関係の可能性があります。", List.of());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }
 
     private Map<String, String> toFieldErrorMap(FieldError error) {

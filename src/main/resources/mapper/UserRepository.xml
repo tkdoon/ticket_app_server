@@ -14,4 +14,12 @@
         insert into m_user(created_at,email,user_name,icon_url,role,is_frozen)
         VALUES (CURRENT_TIMESTAMP,#{email},#{userName},#{iconUrl},null,false)
     </insert>
+
+    <update id="updateUserName">
+        UPDATE m_user SET user_name = #{userName} WHERE id = #{id}
+    </update>
+
+    <select id="selectUserById" resultType="com.tkdoon.ticket_app.entity.UserEntity">
+        SELECT * FROM m_user WHERE id = #{id} AND is_frozen IS FALSE
+    </select>
 </mapper>
